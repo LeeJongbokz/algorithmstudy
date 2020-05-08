@@ -70,6 +70,8 @@ void calculate(int result, int index) {
 			
 			// 재귀함수에 진입함
 			// 단, 이 때 index는 1 증가함
+			// index가 1 증가하는 이유는 벡터 v의 다음 위치에 있는 값을
+			// 연산하기 위함임 
 			calculate(result, index + 1);
 			
 			// 재귀함수로부터 리턴을 해서 백트레킹을 할 때는,
