@@ -62,6 +62,7 @@ void dfs(int x, int y, int sum, int cnt) {
 		// 왜냐하면 같은 위치를 중복해서 방문하지 않아야,
 		// 테트로미노를 만들 수 있기 때문임 
 		if (isRange(nx, ny) && check[nx][ny] == false) {
+			
 			// 변수 nx, ny가 방문할 수 있는 위치라면
 			// 방문을 하고 bool check배열을 true로 처리함
 			check[nx][ny] = true;
@@ -78,6 +79,7 @@ void dfs(int x, int y, int sum, int cnt) {
 			// 재귀함수의 리턴으로 되돌아오면
 			// sum에서 방문한 위치의 값인 map[nx][ny]를 다시 제거해줌
 			sum -= map[nx][ny];
+			
 			// 방문을 취소하기 위해서 bool check배열을 false로 처리함 
 			check[nx][ny] = false; 
 		}
@@ -172,6 +174,7 @@ int main() {
 	// dfs2함수는 ㅗ모양의 테트로미노를 만들기 위한 것임 
 	for (int i = 1; i <= N; i++) {
 		for (int j = 1; j <= M; j++) {
+			
 			// (i,j)좌표의 값을 변수 sum에 더해줌
 			// 이 의미는 (i,j)좌표가 테트로미노의 시작점과 동시에
 			// 테트로미노에 속하는 값이기 때문임
