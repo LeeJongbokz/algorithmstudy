@@ -63,6 +63,7 @@ void calculate(int result, int index) {
                         
 			// 사용한 연산자에 대해서 true를 처리함
 			check[i] = true;
+			
 			// 재귀함수에 진입함
 			// 단, 이 때 index는 1 증가함
 			calculate(result, index + 1);
