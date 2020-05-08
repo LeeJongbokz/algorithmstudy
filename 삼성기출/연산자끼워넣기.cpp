@@ -1,3 +1,7 @@
+
+// 이 문제는 백트레킹 유형이며, 
+// 따라서 적절한 재귀 함수를 작성하여 문제를 해결해야 함 
+
 #include <iostream>
 #include <vector>
 #include <cstring>
