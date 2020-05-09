@@ -1,3 +1,12 @@
+// 이 문제는 구현 문제임 
+
+// 주의할 점은
+// (1) 시간 복잡도와 관련된 문제를 해결하는 것
+// (2) 여러 변수들을 매우 꼼꼼히 관리하는 것
+// (3) 상어와 관련된 정보를 효율적으로 나타내는 것
+// (4) 정보의 업데이트를 효과적으로 반영하는 것
+// 이 중요함
+
 #include <iostream>
 #include <vector>
 #include <cstring> 
@@ -26,30 +35,37 @@ typedef struct {
 // 이 때, 벡터 v의 자료형은 <Shark>로 지정함 
 vector<Shark> v;
 
+// dx, dy 배열은 방향을 나타내기 위해서 활용함 
 int dx[] = { 0, -1, 1, 0, 0 };
 int dy[] = { 0, 0, 0, 1, -1 };
 
-
+// eat_shark()는 크기가 가장 큰 상어가 나머지 상어를 모두 잡아먹는 것을 구현함
 void eat_shark() {
 
 	for (int i = 1; i <= R; i++) {
 		for (int j = 1; j <= C; j++) {
+			// map[i][j]에 2마리 이상의 상어가 존재할 때, 
 			if (map[i][j] >= 2) {
 
 				int max_size = 0;
-
+				
+				// 해당 좌표에 있는 상어 중, 가장 크기가 큰 상어의 크기를 
+				// max_size에 저장함
 				for (int k = 0; k < v.size(); k++) {
 					if (v[k].x == i && v[k].y == j && v[k].alive == true && max_size < v[k].size) {
 						max_size = v[k].size;
 					}
 				}
 
+				// 가장 크기가 큰 상어를 제외한 나머지 상어를 모두 alive=false 처리함
 				for (int k = 0; k < v.size(); k++) {
 					if (v[k].x == i && v[k].y == j && v[k].alive == true && max_size != v[k].size) {
 						v[k].alive = false;
 					}
 				}
-
+				
+				// map[i][j]의 크기를 1로 업데이트 함
+				// 이는 map[i][j]에 1마리의 상어만이 남았음을 의미함 
 				map[i][j] = 1;
 
 
@@ -126,17 +142,30 @@ void move_shark() {
 			speed %= 2 * (C - 1);
 		}
 
-
+		// speed만큼 반복문을 순회함 
 		while (speed--) {
 
+			// direction의 방향으로 한 칸을 움직임 
 			sx += dx[direction];
 			sy += dy[direction];
 
+			// 만약 움직이다가 map을 벗어나게 되면
+			// 이전에 더한 값을 빼주고 speed를 다시 1만큼 더해줌
+			// 이렇게 하는 이유는 map을 벗어나는 경우는 없으며,
+			// map의 맨 끝에 부딪히는 경우, 좌표는 그대로인채
+			// 방향만 바꿔주기 위함임
+			// 즉, 좌표가 그대로임을 나타내기 위해 다시 더한 값을 빼주게 되고
+			// speed도 다시 1만큼 더함 
 			if (sx < 1 || sx > R || sy < 1 || sy > C) {
 				sx -= dx[direction];
 				sy -= dy[direction];
 				speed += 1;
 
+				// 방향을 바꿔줌
+				// 위(1)인 경우는 아래(2)로 
+				// 아래(2)인 경우는 위(1)로
+				// 오른쪽(3)인 경우는 왼쪽(4)으로
+				// 왼쪽(4)인 경우는 오른쪽(3)으로 바꿔줌 
 				if (direction == 1) {
 					direction = 2;
 				}
@@ -154,7 +183,14 @@ void move_shark() {
 
 		}
 
+		// speed만큼 이동이 끝나면
+		// 새로운 위치에 1만큼 값을 더해줌
+		// 이는 새로운 위치로 상어가 이동했음을 나타냄 
 		map[sx][sy] += 1;
+		
+		// 그리고 상어가 있는 벡터 v[i]의 좌표값과 방향을 업데이트 함 
+		// 이것을 업데이트하는 이유는 이것을 업데이트해야만
+		// 이후에 catch_shark(), ear_shark()에서 잘 활용할 수 있기 때문임 
 		v[i].x = sx;
 		v[i].y = sy;
 		v[i].direction = direction;
@@ -260,7 +296,7 @@ int main() {
 		eat_shark();
 	}
 
-
+	// 전체 잡은 상어의 무게를 출력함 
 	cout << total;
 
 
