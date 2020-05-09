@@ -69,8 +69,7 @@ void dfs(int x, int y, int direction, int time) {
 					direction += 1;
 				}
 			}
-			// directionChange[0].second == 'L'이라면
-			// direction을 다음과 같이 바꿔줌 
+			// directionChange[0].second == 'L'이라면, direction을 다음과 같이 바꿔줌 
 			else if (directionChange[0].second == 'L') {
 				if (direction == 0) {
 					direction = 3;
@@ -80,8 +79,7 @@ void dfs(int x, int y, int direction, int time) {
 				}
 			}
 
-			// directionChange[0]은 이제 불필요해졌으므로
-			// 벡터에서 제거함 
+			// directionChange[0]은 이제 불필요해졌으므로, 벡터에서 제거함 
 			directionChange.erase(directionChange.begin());
 
 		}
