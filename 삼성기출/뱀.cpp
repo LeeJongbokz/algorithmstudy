@@ -54,7 +54,7 @@ void dfs(int x, int y, int direction, int time) {
 
 	// directionChange는 뱀의 방향 변환 정보(시간, 방향)를 저장한 벡터임
 	// 여기서 directionChange에는 시간 정보가 오름차순으로 정렬되어 있음
-	// directionChange[0].second의 방향에 따라 방향을 바꿔줌 
+	// 그리고 directionChange[0].second의 방향에 따라 방향을 바꿔줌 
 	if (directionChange.size() != 0) {
 		
 		// time과 directionChange[0].first값과 일치할 때,
