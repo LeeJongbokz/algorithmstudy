@@ -116,25 +116,42 @@ public:
   }
 };
 
-
+// SalesWorker 클래스를 만들고 PermanentWorker 클래스를 상속한다
 class SalesWorker : public PermanentWorker{
 
 private:
+  // SalesWorker 클래스에는 2개의 멤버 변수가 존재한다
+  // 첫번째는 salesResult 멤버 변수
+  // 두번째는 bonusRatio 멤버 변수 이다 
+  // 그리고 두 멤버 변수의 곱은 SaleWorker에게 지급되는 영업 수당을 의미한다. 
   int salesResult;
   double bonusRatio;
   
 public:
+  // SalesWorker 클래스의 생성자를 선언한다
+  // 생성자는 name, money, saleResult, bonusRatio 4개의 멤버 변수를 초기화한다
+  // 이 중 name, money 이 2개의 멤버 변수는 PermanentWorker 클래스에서 상속한 멤버 변수이며,
+  // salesResult 와 bonusRatio는 SalesWorker 클래스의 멤버 변수이다. 
   SalesWorker(char* name, int money, double ratio) : PermanentWorker(name, money), salesResult(0), bonusRatio(ratio){
   }
   
+  // AddSalesResult() 멤버 함수를 선언한다
+  // 이 함수는 value라는 매개변수를 활용해, salesResult 멤버 변수에 그 값을 더해준다. 
   void AddSalesResult(int value){
     salesResult += value;
   }
   
+  // GetPay() 멤버 함수를 선언한다.
+  // 이 함수에서는 부모 클래스인 PermanentWorker 클래스의 GetPay() 멤버 함수를 호출하고,
+  // 그 리턴 값(기본 수당)에 영업 수당인 saleResult*bonusRatio를 더해준다. 
   int GetPay() const{
     return PermanentWorker::GetPay() + (int)(salesResult*bonusRatio);
   }
   
+  // ShowSalaryInfo() 멤버 함수를 선언한다
+  // ShowSalaryInfo() 멤버 함수는 부모 클래스인 ShowYourName() 멤버 함수를 호출하고,
+  // SalesWorker 클래스의 멤버 함수인 GetPay()를 호출한다. 
+  // 그 결과 SalesWorker 객체의 이름과 급여가 출력된다. 
   void ShowSalaryInfo() const{
     ShowYourName();
     cout << "salary: " << GetPay() << '\n';
@@ -142,6 +159,11 @@ public:
 
 }
 
+// EmployeeHandler 클래스를 만든다
+
+// 멤버함수 ShowAllSalaryInfo()와 ShowTotalSalary()를 정의한다.  
+// ShowAllSalaryInfo()는 Employee 객체들의 각각의 급여를 출력할 수 있는 멤버 함수와
+// ShowTotalSalary()는 Employee 객체들의 전체 급여를 합해서 출력할 수 있는 멤버 함수이다. 
 class EmployeeHandler{
 
 private:
@@ -149,13 +171,17 @@ private:
   int empNum;
   
 public:
+  // EmployeeHandler 클래스의 생성자를 정의한다.
+  // 이 때, 멤버 이니셜라이저를 활용해서 멤버 변수인 empNum을 0으로 초기화한다. 
   EmployeeHandler() : empNum(0){
   }
   
+  // AddEmployee() 멤버 함수를 활용해서 전체 Employee 객체들을 배열에 저장한다
   void AddEmployee(Employee* emp){
     empList[empNum++] = emp;
   }
   
+  // ShowAllSalaryInfo() 멤버 함수는 Employee 객체들의 각각의 급여를 출력할 수 있다. 
   void ShowAllSalaryInfo() const{
     
     for(int i=0; i<empNum; i++){
@@ -163,6 +189,7 @@ public:
     }
   }
   
+  // showTotalSalary() 멤버 함수는 Employee 객체들의 전체 급여를 합해서 출력한다. 
   void ShowTotalSalary() const{
     
     int sum = 0; 
@@ -173,6 +200,8 @@ public:
     cout << "salary sum: " << sum << '\n';
   }
   
+  // EmployeeHandler의 소멸자를 정의한다.
+  // 소멸자를 정의해주는 이유는 empList에 저장된 객체들을 삭제해주기 위함이다. 
   ~EmployeeHandler(){
     for(int i=0; i<empNum; i++){
         delete empList[i];
@@ -183,24 +212,54 @@ public:
 
 int main(){
 
+  // EmployeeHandler 클래스의 객체인 handler를 선언한다.
   EmployeeHandler handler;
   
+  // handler 객체에 새로운 PermanentWorker 객체를 추가한다
+  // 이 때, new를 통해서 객체를 동적 메모리 할당을 한다 
   handler.AddEmployee(new PermanentWorker("KIM", 1000));
   handler.AddEmployee(new PermanentWorker("LEE", 1500));
   handler.AddEmployee(new PermanentWorker("JUN", 2000));
 
+  // TempararyWorker 클래스의 객체인 alba를 선언한다.
+  // 이 때, new를 통해서 객체를 동적 메모리 할당을 한다.
+  // TemporaryWorker 클래스의 멤버 변수인 name과 pay를 초기화한다 
   TemporaryWorker* alba = new TemporaryWorker("Jung", 700);
+  
+  // alba 객체의 AddWorkTime 멤버 함수를 통해서 
+  // 멤버 변수인 workTime에 5를 더해준다.
   alba->AddWorkTime(5);
+  
+  // handler 객체에 alba 객체를 추가한다. 
   handler.AddEmployee(alba);
   
+  // SalesWorker 클래스의 객체인 seller를 선언한다
+  // 이 때, new를 통해서 객체를 동적 메모리 할당을 한다
+  // 또한, 멤버 변수인 name, salary, bonusRatio를 초기화한다 
   SalesWorker* seller = new SalesWorker("Hong", 1000, 0.1);
+  
+  // seller 객체의 AddSalesResult 멤버 함수를 실행해서
+  // saleResult 멤버 변수에 7000을 더해준다.
   seller->AddSalesResult(7000);
+  
+  // handler 객체에 seller 객체를 추가한다. 
   handler.AddEmployee(seller);
   
+  // handler 객체의 ShowAllSalaryInfo 함수를 통해서
+  // 각 객체들의 showSalaryInfo 멤버 함수를 실행한다
+  // 이것이 가능한 이유는    
+  // PermanentWorker 클래스, TemporaryWorker 클래스, SalesWorker 클래스 각각에
+  // showSalaryInfo() 멤버 함수를 선언했기 때문이다. 
+  // 이 때, 중요한 점은 SalesWorker 클래스에 선언된 
+  // ShowSalaryInfo()는 부모 클래스인 PermanentWorker 클래스에 선언된 ShowSalaryInfo()를 
+  // 오버라이딩한다는 점이다. 
   handler.ShowAllSalaryInfo();
   
+  // handler 객체의 showTotalSalary()를 실행함
+  // 이를 통해서 handler 객체에 저장된 모든 객체들의 salary를 합산한 값을
+  // 출력할 수 있음
   handler.ShowTotalSalary();
-
+          
   return 0; 
-}
+}             
 
