@@ -68,6 +68,7 @@ vector<int> solution(int N, vector<int> stages) {
         // total이 0이 아닌 경우는 실패율을 계산한다
         // 실패율의 정의는 스테이지에 도달했으나 클리어하지 못한 플레이어의 수를
         // 스테이지에 도달한 플레이어의 수로 나눠주는 것이다. 
+        //failureRate를 구할 때, cnt와 total을 double로 바꿔줘야 한다는 점을 유의해야 함
             failureRate = (double)cnt / (double)total;
         }
         
