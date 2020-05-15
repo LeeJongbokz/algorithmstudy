@@ -46,6 +46,8 @@ vector<int> solution(int N, vector<int> stages) {
         int cnt = 0; 
         
         // 변수 cnt에 현재 스테이지의 인원을 저장한다 
+        // for문을 통해서 stages 배열에 있는 값들을 반복 접근하면서
+        // 해당 stage에 있는 사용자의 수를 계산한다 
         for(int j=0; j<len; j++){
             if(i == stages[j]){
                 cnt += 1;
@@ -58,6 +60,8 @@ vector<int> solution(int N, vector<int> stages) {
         
         // 만약 변수 total이 0이라면 failureRate는 0으로 정의한다
         // 왜냐하면 total이 0이면 실패율 자체를 정의할 수 없기 때문이다
+        // total이 0인 경우와 아닌 경우를 분리하는 것이 매우 중요하다 
+        // 이 부분을 잘 고려하지 않으면 런타임 에러를 경험할 수 있다 
         if(total == 0){
             failureRate = 0; 
         }else{
