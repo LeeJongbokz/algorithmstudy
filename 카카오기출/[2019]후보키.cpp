@@ -93,7 +93,7 @@ void isMinimal() {
 				}
 				else {
 					isCheck = false;
-                    break;
+                   			break;
 				}
 			}
 
@@ -104,8 +104,6 @@ void isMinimal() {
 		}
 
 	}
-
-
 
 }
 
