@@ -1,0 +1,58 @@
+#include <iostream>
+
+using namespace std;
+
+class Node {
+public:
+	int data;
+	Node* next;
+};
+
+void push(Node** head_ref, int new_num, int& total) {
+
+	total += 1;
+	Node* new_node = new Node();
+	new_node->data = new_num;
+	new_node->next = *head_ref;
+	*head_ref = new_node;
+
+}
+
+int searchNode(Node* node, int& N, int K) {
+
+	int cnt = 0;
+	int data = 0; 
+
+	while (node != NULL) {
+		cnt += 1;
+		if (cnt == (N - K + 1)) {
+			data = node->data;
+			break;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return data; 
+}
+
+
+int main() {
+
+	Node* head = NULL;
+	int N = 0;
+	int K;
+	cin >> K;
+
+	push(&head, 1, N);
+	push(&head, 3, N);
+	push(&head, 5, N);
+	push(&head, 7, N);
+	push(&head, 9, N);
+
+	int result = searchNode(head, N, K);
+
+	cout << result; 
+
+}
