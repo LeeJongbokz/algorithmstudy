@@ -1,0 +1,266 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+char map[30][30];
+int H, W;
+bool check[30][30];
+int total; 
+int white; 
+
+bool isRange(int x, int y) {
+	if (1 <= x && x <= H && 1 <= y && y <= W) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool isCheck(int x, int y, int k) {
+
+
+	if (k == 0) {
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y;
+
+		if ((map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1)) && (map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1))) {
+			return true;
+		}
+		else {
+			return false; 
+		}
+
+
+	}
+	else if (k == 1) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y - 1;
+
+		if ((map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1)) && (map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1))) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+
+
+	}
+	else if (k == 2) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		if ((map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1)) && (map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1))) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+	else if (k == 3) {
+
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		if ((map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1)) && (map[nx1][ny1] == '.' && check[nx1][ny1] == false && isRange(nx1, ny1))) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+
+
+}
+
+
+void cover(int x, int y, int k) {
+
+
+
+	if (k == 0) {
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y;
+
+		check[x][y] = true;
+		check[nx1][ny1] = true;
+		check[nx2][ny2] = true;
+
+	}
+	else if (k == 1) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y - 1;
+
+		check[x][y] = true;
+		check[nx1][ny1] = true;
+		check[nx2][ny2] = true;
+
+	}
+	else if (k == 2) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		check[x][y] = true;
+		check[nx1][ny1] = true;
+		check[nx2][ny2] = true;
+
+	}
+	else if (k == 3) {
+
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		check[x][y] = true;
+		check[nx1][ny1] = true;
+		check[nx2][ny2] = true;
+
+	}
+
+}
+
+void uncover(int x, int y, int k) {
+
+
+	if (k == 0) {
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y;
+
+		check[x][y] = false;
+		check[nx1][ny1] = false;
+		check[nx2][ny2] = false;
+
+	}
+	else if (k == 1) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y - 1;
+
+		check[x][y] = false;
+		check[nx1][ny1] = false;
+		check[nx2][ny2] = false;
+
+	}
+	else if (k == 2) {
+
+		int nx1 = x + 1;
+		int ny1 = y;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		check[x][y] = false;
+		check[nx1][ny1] = false;
+		check[nx2][ny2] = false;
+
+	}
+	else if (k == 3) {
+
+		int nx1 = x;
+		int ny1 = y + 1;
+		int nx2 = x + 1;
+		int ny2 = y + 1;
+
+		check[x][y] = false;
+		check[nx1][ny1] = false;
+		check[nx2][ny2] = false;
+
+	}
+
+}
+
+
+void recursive(int x, int y, int cnt) {
+
+	if (cnt == white / 3) {
+		total += 1;
+		return; 
+	}
+
+
+	for (int i = x; i <= H; i++) {
+		for (int j = y; j <= W; j++) {
+			if (map[i][j] == '.' && check[i][j] == false) {
+				bool result = false;
+
+				for (int k = 0; k < 4; k++) {
+					result = isCheck(i, j, k);
+
+					if (result) {
+						cover(i, j, k);
+						recursive(i, j, cnt+1);
+						uncover(i, j, k);
+					}
+				}
+
+				return; 
+
+			}
+		}
+	}
+
+
+}
+
+int main() {
+
+	int C;
+	cin >> C;
+
+
+	for (int i = 1; i <= C; i++) {
+
+		memset(check, false, sizeof(check));
+		total = 0; 
+		white = 0; 
+		cin >> H >> W;
+
+		for (int i = 1; i <= H; i++) {
+			for (int j = 1; j <= W; j++) {
+				cin >> map[i][j];
+			}
+		}
+
+		for (int i = 1; i <= H; i++) {
+			for (int j = 1; j <= W; j++) {
+				if (map[i][j] == '.') {
+					white += 1;
+				}
+			}
+		}
+
+		if (white % 3 == 0) {
+			recursive(1, 1, 0);
+		}
+
+		cout << total <<  '\n'; 
+
+	}
+
+}
