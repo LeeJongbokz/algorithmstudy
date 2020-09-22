@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <algorithm> 
+
+using namespace std;
+
+const int INF = 999999999;
+int N;
+int cost[20][20];
+bool visited[100];
+int minSum = INF;
+int start;
+
+void recursive(int now, vector<int>& v) {
+
+	if (v.size() == N-1) {
+		int tempSum = 0;
+		for (int i = 0; i < v.size(); i++) {
+			tempSum += v[i];
+		}
+        
+        if(cost[now][start] == 0){
+            return; 
+        }
+        
+		tempSum += cost[now][start];
+
+		minSum = min(minSum, tempSum);
+		return; 
+	}
+	   
+	for (int i = 1; i <= N; i++) {
+		if (now != i && cost[now][i] != 0 && visited[i] == false) {
+			visited[i] = true;
+			v.push_back(cost[now][i]);
+			recursive(i, v);
+			v.pop_back();
+			visited[i] = false; 
+		}
+	  }
+
+}
+
+
+int main() {
+
+	cin >> N;
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N; j++) {
+			cin >> cost[i][j];
+		}
+	}
+
+	for (int i = 1; i <= N; i++) {
+		memset(visited, false, sizeof(visited));
+		start = i; 
+		int now = i; 
+		visited[start] = true; 
+		vector<int> v;
+		recursive(now, v);
+		visited[start] = false; 
+	}
+
+	cout << minSum;
+
+
+}
