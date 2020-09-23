@@ -1,0 +1,223 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+
+using namespace std;
+
+const int INF = 9999999;
+vector<int> switches[20];
+int minCnt = INF;
+
+vector<int> startWatch; 
+
+
+
+
+void turnClock(vector<int>& watch, vector<int>selectedSwitche, int type) {
+	   
+	if (type == 1) {
+		for (int i = 0; i < selectedSwitche.size(); i++) {
+			int pos = selectedSwitche[i];
+
+			for (int j = 0; j <= 15; j++) {
+				if (pos == j) {
+					watch[j] += 3;
+					if (watch[j] == 15) {
+						watch[j] = 3;
+					}
+					break;
+				}
+				else {
+					continue;
+				}
+			}
+		}
+	}
+	else if (type == -1) {
+
+		for (int i = 0; i < selectedSwitche.size(); i++) {
+			int pos = selectedSwitche[i];
+
+			for (int j = 0; j <= 15; j++) {
+				if (pos == j) {
+					watch[j] -= 3;
+					if (watch[j] == 0) {
+						watch[j] = 12;
+					}
+					break;
+				}
+				else {
+					continue;
+				}
+			}
+		}
+
+	}
+
+
+}
+
+
+bool check(vector<int>& watch) {
+
+	for (int i = 0; i < watch.size(); i++) {
+		if (watch[i] == 12) {
+			continue;
+		}
+		else {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+bool check2(vector<int>& v) {
+
+	int cnt = 0;
+	int num = v.back();
+
+	if (v.size() >= 4) {
+		for (int i = v.size() - 1; i >= 0; i--) {
+			if (num == v[i]){
+				cnt += 1;
+			}
+			else {
+				break;
+			}
+		}
+	}
+
+	if (cnt == 4) {
+		return true;
+	}
+	else {
+		return false; 
+	}
+	
+}
+
+
+void recursive(vector<int>& watch, vector<int>&v) {
+
+	bool status = check(watch);
+	if (status == true) {
+		int cnt = v.size();
+		minCnt = min(minCnt, cnt);
+		return; 
+	}
+
+	if (v.size() >= 4) {
+		bool status2 = check2(v);
+
+		if (status2 == true) {
+			return;
+		}
+	}
+
+
+	for (int i = 0; i <= 9; i++) {
+
+		for (int j = 0; j < switches[i].size(); j++) {
+			int pos = switches[i][j];
+
+			if (watch[pos] == 12) {
+				continue;
+			}
+			else {
+				turnClock(watch, switches[i], 1);
+				v.push_back(i);
+				recursive(watch, v);
+				v.pop_back();
+				turnClock(watch, switches[i], -1);
+			}
+		}
+	}
+
+
+}
+
+
+
+int main() {
+
+	int C;
+	cin >> C;
+
+	switches[0].push_back(0);
+	switches[0].push_back(1);
+	switches[0].push_back(2);
+
+	switches[1].push_back(3);
+	switches[1].push_back(7);
+	switches[1].push_back(9);
+	switches[1].push_back(11);
+
+	switches[2].push_back(4);
+	switches[2].push_back(10);
+	switches[2].push_back(14);
+	switches[2].push_back(15);
+
+	switches[3].push_back(0);
+	switches[3].push_back(4);
+	switches[3].push_back(5);
+	switches[3].push_back(6);
+	switches[3].push_back(7);
+
+
+	switches[4].push_back(6);
+	switches[4].push_back(7);
+	switches[4].push_back(8);
+	switches[4].push_back(10);
+	switches[4].push_back(12);
+
+	switches[5].push_back(0);
+	switches[5].push_back(2);
+	switches[5].push_back(14);
+	switches[5].push_back(15);
+
+	switches[6].push_back(3);
+	switches[6].push_back(14);
+	switches[6].push_back(15);
+
+	switches[7].push_back(4);
+	switches[7].push_back(5);
+	switches[7].push_back(7);
+	switches[7].push_back(14);
+	switches[7].push_back(15);
+
+	switches[8].push_back(1);
+	switches[8].push_back(2);
+	switches[8].push_back(3);
+	switches[8].push_back(4);
+	switches[8].push_back(5);
+
+	switches[9].push_back(3);
+	switches[9].push_back(4);
+	switches[9].push_back(5);
+	switches[9].push_back(9);
+	switches[9].push_back(13);
+
+
+	for (int i = 0; i < C; i++) {
+		vector<int>watch;
+		minCnt = INF;
+		for (int j = 0; j <= 15; j++) {
+			int num;
+			cin >> num;
+			watch.push_back(num);
+		}
+		startWatch = watch;
+		vector<int>v;
+		recursive(watch, v);
+
+		if (minCnt == INF) {
+			cout << -1 << '\n';
+		}
+		else {
+			cout << minCnt << '\n';
+		}
+	}
+}
