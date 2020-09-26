@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+int cache[510];
+int N;
+vector<int> s;
+
+int recursive(int start) {
+
+	int& ret = cache[start];
+
+	if (ret != -1) {
+		return ret;
+	}
+
+	for (int i = start + 1; i < N; i++) {
+		if (s[start] < s[i]) {
+			ret = max(ret, recursive(start) + 1);
+		}
+	}
+	return ret;
+}
+
+int main() {
+
+	int C;
+	cin >> C;
+
+	for (int i = 0; i < C; i++) {
+
+		memset(cache, -1, sizeof(cache));
+		s.clear();
+		cin >> N;
+
+		for (int j = 0; j < N; j++) {
+			int num;
+			cin >> num;
+			s.push_back(num);
+		}
+
+		int LIS;
+
+		for (int j = 0; j < N; j++) {
+			int len = recursive(j);
+			LIS = max(LIS, len);
+		}
+		cout << LIS << '\n';
+
+	}
+}
