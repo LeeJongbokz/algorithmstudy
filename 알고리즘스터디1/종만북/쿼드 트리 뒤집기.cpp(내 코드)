@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+
+string quadTree(string str) {
+
+	if (str[0] != 'x') {
+		return str;
+	}
+
+	string temp = quadTree(str.substr(1));
+	vector<string> result;
+	int pos = 0;
+
+	
+	for (int i = 0; i < 4; i++) {
+
+			string s;
+
+			if (temp[pos] != 'x') {
+				s += temp[pos];
+				result.push_back(s);
+				pos += 1;
+			}
+			else {
+				string temp2 = quadTree(temp.substr(pos));
+				result.push_back(temp2);
+				pos += temp2.size();
+			}
+	}
+	
+
+	return 'x' + result[2] + result[3] + result[0] + result[1];
+
+
+}
+
+
+int main() {
+
+	string str;
+	cin >> str;
+
+	string result = quadTree(str);
+	
+	cout << result; 
+}
